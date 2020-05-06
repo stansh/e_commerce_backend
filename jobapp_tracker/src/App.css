@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+ .CardTitle {
+   color:red
+
+ }
+ 
+.jumbotron {
+  font-weight: 500;
+}
