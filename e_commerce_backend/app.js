@@ -4,10 +4,26 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017/';
+const dbname = 'e_commerce'
+
+MongoClient.connect(url, {useUnifiedTopology: true})
+.then((client) => console.log(`connected to server.${client}`),
+ err => console.log(err)
+)
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+
+/* 
+app.get('/products', function(req, res, next) {
+  res.end('sending data');
+}); */
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,5 +53,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;
