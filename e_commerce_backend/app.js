@@ -16,15 +16,17 @@ const dbname = 'e_commerce'
 })
  */
 
-mongoose.connect(url, {
+const connect = mongoose.connect(url, {
     useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true, 
     useUnifiedTopology: true
 });
 
-
-
+/* connect.then(() => console.log('Connected correctly to server', connect),
+    err => console.log(err)
+)
+ */
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
