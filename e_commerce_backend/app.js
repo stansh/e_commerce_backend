@@ -29,6 +29,7 @@ const connect = mongoose.connect(url, {
  */
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var cartRouter = require('./routes/cart');
 
 var app = express();
 
@@ -43,8 +44,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/products', indexRouter);
 app.use('/users', usersRouter);
+app.use('/cart', cartRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
