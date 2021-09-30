@@ -7,31 +7,37 @@ const Currency = mongoose.Types.Currency;
 
 const cartItemSchema = new Schema({
 
+    
     title: {
         type: String,
-        required: true
+        required: false
     },
     price: {
         type: Currency,
-        required: true,
+        required: false,
         min: 0
     }, 
     description: {
         type: String,
-        required: true
+        required: false
     },
     category: {
         type: String,
-        required: true
+        required: false
     },
     image: {
         type: String,
-        required: true
-    },
+        required: false
+    }, 
+    qty: {
+        type: Number,
+        required: false,
+        min: 0
+    }
 
-}, {
+}, /* {
     timestamps: true
-});
+} */) ;
 
 const CartItem = mongoose.model('CartItem', cartItemSchema);
 
