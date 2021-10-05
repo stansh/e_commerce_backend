@@ -9,6 +9,17 @@ const CartItem = require('../models/cartItem');
 
 
 
+router.get('/', (req, res, next) => {
+  CartItem.find()
+  .then(products => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(products);
+      
+  })
+  .catch(err => next(err));
+})
+
 
 router.post('/', (req, res, next) => {
   console.log(req.body)
@@ -55,15 +66,27 @@ router.put('/', (req, res, next) => {
       })
      .catch(err => next(err));
     } else if (item && operation === 'down') {
-      item.qty--
-      item.save()
-      .then(item => {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.json(item);
-      })
-      .catch(err => next(err));
-    } else {
+        if (item.qty > 1) {
+          item.qty--
+          item.save()
+          .then(item => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(item);
+            })
+          .catch(err => next(err));
+        } else {
+          item.delete()
+          .then(item => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(item);
+            })
+          .catch(err => next(err));
+        }
+        
+        
+     } else {
       err = new Error();
       err.status = 404;
       return next(err);
