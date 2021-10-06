@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
 
+
+
 //const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/e_commerce';
 const dbname = 'e_commerce'
@@ -23,14 +25,12 @@ const connect = mongoose.connect(url, {
     useUnifiedTopology: true
 });
 
-/* connect.then(() => console.log('Connected correctly to server', connect),
-    err => console.log(err)
-)
- */
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productsRouter = require('./routes/products');
 var cartRouter = require('./routes/cart');
+var checkoutRouter = require('./routes/checkout');
 
 var app = express();
 
@@ -49,6 +49,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/cart', cartRouter);
+app.use('/checkout', checkoutRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

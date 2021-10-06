@@ -14,7 +14,7 @@ const cartItemSchema = new Schema({
     },
     price: {
         type: Currency,
-        required: false,
+        required: true,
         min: 0
     }, 
     description: {
