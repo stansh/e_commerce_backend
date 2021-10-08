@@ -1,17 +1,17 @@
 var express = require('express');
 const app = require('../app');
 var router = express.Router();
-const uuid = require("uuidv4");
+const {uuid}= require("uuidv4");
 const stripe = require("stripe")("sk_test_51JhRBrECGNUUIhhjH0ft95P6jY80N538YN7d1xaAn0kkfW0aulfmEBfphaMOZxD6v7USiLeYUPmNfFSkELtVkb7L00y1SboNnB");
 
-router.post("/checkout", async (req, res) => {
+router.post("/", async (req, res) => {
     console.log("Request:", req.body);
   
     let error;
     let status;
     try {
-      const { product, token } = req.body;
-  
+      //const { product, token } = req.body;
+      const { token,amount } = req.body;
       const customer = await stripe.customers.create({
         email: token.email,
         source: token.id
@@ -20,11 +20,12 @@ router.post("/checkout", async (req, res) => {
       const idempotency_key = uuid();
       const charge = await stripe.charges.create(
         {
-          amount: product.price * 100,
+          //amount: product.price * 100,
+          amount: amount * 100,
           currency: "usd",
           customer: customer.id,
           receipt_email: token.email,
-          description: `Purchased the ${product.name}`,
+          //description: `Purchased the ${product.name}`,
           shipping: {
             name: token.card.name,
             address: {
