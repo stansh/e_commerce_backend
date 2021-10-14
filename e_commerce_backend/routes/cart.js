@@ -97,7 +97,7 @@ router.put('/', (req, res, next) => {
 })
 
 router.delete('/', (req, res, next) => {
-  console.log(req.body)
+  
   CartItem.findById(req.body._id)
   .then(item => {
     if(item) {

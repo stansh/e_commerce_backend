@@ -4,9 +4,48 @@ var router = express.Router();
 const {uuid}= require("uuidv4");
 const stripe = require("stripe")("sk_test_51JhRBrECGNUUIhhjH0ft95P6jY80N538YN7d1xaAn0kkfW0aulfmEBfphaMOZxD6v7USiLeYUPmNfFSkELtVkb7L00y1SboNnB");
 
-router.post("/", async (req, res) => {
-    console.log("Request:", req.body);
-  
+
+const calculateOrderAmount = items => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return 1400;
+};
+
+
+
+const YOUR_DOMAIN = 'http://localhost:3000';
+
+router.post('/', async (req, res) => {
+  console.log("REQUEST:" + req.headers)
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          unit_amount: 1000,
+          currency: 'usd',
+          product_data:{
+            name: "Motherfucker"
+          }          
+        },
+        quantity: 1,
+      },
+    ],
+    payment_method_types: [
+      'card',
+    ],
+    mode: 'payment',
+    success_url: `${YOUR_DOMAIN}/cart?success=true`,
+    cancel_url: `${YOUR_DOMAIN}/cart?canceled=true`,
+  });
+  res.redirect(303, session.url)
+  //res.json({url: session.url})
+});
+
+
+
+
+ /* router.post("/", async (req, res) => {
     let error;
     let status;
     try {
@@ -17,15 +56,14 @@ router.post("/", async (req, res) => {
         source: token.id
       });
   
-      const idempotency_key = uuid();
-      const charge = await stripe.charges.create(
+      const idempotencyKey = uuid();
+      const charge = await stripe.charges.create (
         {
-          //amount: product.price * 100,
+          
           amount: amount * 100,
           currency: "usd",
           customer: customer.id,
           receipt_email: token.email,
-          //description: `Purchased the ${product.name}`,
           shipping: {
             name: token.card.name,
             address: {
@@ -38,36 +76,22 @@ router.post("/", async (req, res) => {
           }
         },
         {
-          idempotency_key
+          idempotencyKey,
         }
       );
-      console.log("Charge:", { charge });
+      console.error("Charge:", {charge});
       status = "success";
     } catch (error) {
       console.error("Error:", error);
       status = "failure";
     }
+    
+    
+    res.json();
+    
+   
   
-    res.json({ error, status });
-  });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  });  */
 
 
 
