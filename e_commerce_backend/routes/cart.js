@@ -97,27 +97,35 @@ router.put('/', (req, res, next) => {
 })
 
 router.delete('/', (req, res, next) => {
-  
-  CartItem.findById(req.body._id)
-  .then(item => {
-    if(item) {
-      item.delete()
-     .then(item => {
+  if (req.body._id == null) {
+    CartItem.deleteMany({})
+    .then(items => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
-      res.json(item);
-      })
-     .catch(err => next(err));
-    } else {
-      err = new Error();
-      err.status = 404;
-      return next(err);
-      }
-  })
-  .catch(err => next(err));
+      res.json(items);
+      
+    })
+    .catch(err => next(err));   
+  } else {
+    CartItem.findById(req.body._id)
+    .then(item => {
+      if(item) {
+        item.delete()
+      .then(item => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(item);
+        })
+      .catch(err => next(err));
+      } else {
+        err = new Error();
+        err.status = 404;
+        return next(err);
+        }
+    })
+    .catch(err => next(err));
+  }  
 })
-
-  
 
 module.exports = router;
 

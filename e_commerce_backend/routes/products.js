@@ -10,11 +10,11 @@ const Product = require('../models/product');
 
 
 router.get('/', (req, res, next) => {
-    Product.find()
-    .then(products => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(products);
+  Product.find()
+  .then(products => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(products); 
         
     })
     .catch(err => next(err));

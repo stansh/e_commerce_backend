@@ -5,14 +5,24 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 const mongoose = require('mongoose');
-
+/* var whitelist = 'http://localhost:3000'
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (req.header('Origin') === whitelist ) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+  */
 
 const stripe = require("stripe")("sk_test_51JhRBrECGNUUIhhjH0ft95P6jY80N538YN7d1xaAn0kkfW0aulfmEBfphaMOZxD6v7USiLeYUPmNfFSkELtVkb7L00y1SboNnB");
 
 
 //const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/e_commerce';
-const dbname = 'e_commerce'
+//const dbname = 'e_commerce'
 
 /* MongoClient.connect(url, {useUnifiedTopology: true})
 .then(client => {
@@ -42,23 +52,21 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors({origin: "http://localhost:3000"}));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors({ origin: "http://localhost:3000"}))
+
 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
 app.use('/cart', cartRouter);
-app.use('/create-checkout-session', checkoutRouter);
-
-
-
-
+app.use('/checkout', checkoutRouter);
 
 
 
